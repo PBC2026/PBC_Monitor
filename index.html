@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PBC Care - Policlinico di Bari</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #f0f9ff;
+      --primary-border: #bae6fd;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-500: #64748b;
+      --slate-700: #334155;
+      --slate-900: #0f172a;
+      --amber-500: #f59e0b;
+      --amber-50: #fffbeb;
+      --red-500: #ef4444;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f8fafc; color: var(--slate-700); display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+    .app-shell { max-width: 680px; width: 100%; padding: 14px 14px 60px 14px; }
+
+    /* Header Clinico */
+    .hospital-header {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 18px 16px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .logo-container {
+      width: 76px;
+      height: 76px;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      padding: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .logo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .header-text {
+      flex: 1;
+      text-align: center;
+    }
+    .header-text h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
+    }
+    .header-text p {
+      font-size: 0.86rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .header-text small {
+      font-size: 0.72rem;
+      color: var(--slate-500);
+      display: block;
+      line-height: 1.35;
+    }
+
+    /* Box ID Paziente */
+    .patient-id-card {
+      background: #ffffff;
+      border: 1.5px solid var(--primary-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .patient-id-card label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+    .patient-id-card input {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--slate-300);
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-align: center;
+      width: 140px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    /* Navigazione */
+    .nav-tabs { display: flex; background: #e2e8f0; border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 18px; position: sticky; top: 10px; z-index: 50; }
+    .nav-tab { flex: 1; padding: 10px 4px; font-size: 0.78rem; font-weight: 600; text-align: center; border: none; background: transparent; color: var(--slate-500); border-radius: 8px; cursor: pointer; transition: all 0.15s ease; }
+    .nav-tab.active { background: #ffffff; color: var(--primary-dark); box-shadow: var(--shadow-sm); }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Card Stile Medico */
+    .card { background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--slate-200); box-shadow: var(--shadow-sm); padding: 18px; margin-bottom: 16px; }
+    .card-header { margin-bottom: 14px; border-bottom: 1px solid var(--slate-100); padding-bottom: 10px; }
+    .card-header h2 { font-size: 1.02rem; font-weight: 700; color: var(--slate-900); }
+    .card-header p { font-size: 0.78rem; color: var(--slate-500); margin-top: 3px; }
+
+    .callout-info { background: var(--amber-50); border-left: 3.5px solid var(--amber-500); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; color: #92400e; line-height: 1.4; margin-bottom: 16px; }
+
+    /* Sezioni PBC-40 */
+    .section-banner { background: linear-gradient(90deg, var(--primary-light), #f8fafc); border: 1px solid var(--primary-border); border-left: 4px solid var(--primary); padding: 12px 14px; border-radius: var(--radius-sm); margin: 20px 0 14px 0; }
+    .section-banner h3 { font-size: 0.88rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.03em; }
+    .section-banner p { font-size: 0.76rem; color: var(--slate-700); margin-top: 4px; font-style: italic; }
+
+    .q-card { background: #ffffff; border: 1px solid var(--slate-200); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .q-text { font-size: 0.88rem; font-weight: 600; color: var(--slate-900); line-height: 1.35; margin-bottom: 12px; display: flex; gap: 8px; }
+    .q-num { color: var(--primary); font-weight: 700; min-width: 22px; }
+
+    /* Opzioni Cliccabili */
+    .opts-cluster { display: grid; grid-template-columns: repeat(auto-fit, minmax(62px, 1fr)); gap: 6px; }
+    .opt-label-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 3px;
+      border-radius: var(--radius-sm);
+      background: var(--slate-50);
+      border: 1.5px solid var(--slate-200);
+      cursor: pointer;
+      user-select: none;
+      min-height: 52px;
+      transition: all 0.1s ease;
+    }
+    .opt-label-btn:active { transform: scale(0.97); }
+    .opt-label-btn.selected {
+      background: var(--primary) !important;
+      border-color: var(--primary) !important;
+      color: #ffffff !important;
+      box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
+    }
+    .opt-text { font-size: 0.65rem; font-weight: 500; text-align: center; line-height: 1.15; margin-bottom: 2px; }
+    .opt-score { font-size: 0.8rem; font-weight: 800; opacity: 0.85; }
+    .opt-label-btn.selected .opt-score { opacity: 1; }
+
+    /* Form Esami */
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.76rem; font-weight: 600; color: var(--slate-700); margin-bottom: 4px; }
+    .form-group input { width: 100%; padding: 10px 12px; border-radius: var(--radius-sm); border: 1.5px solid var(--slate-200); font-size: 0.92rem; color: var(--slate-900); }
+
+    /* Bottoni Principali */
+    .btn-main { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); }
+    .btn-sec { background: transparent; border: 1.5px solid var(--slate-300); color: var(--slate-700); padding: 10px; border-radius: 10px; font-weight: 600; font-size: 0.82rem; cursor: pointer; width: 100%; margin-top: 8px; }
+
+    /* Risultati Score */
+    .score-summary-card { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; border-radius: var(--radius-lg); padding: 22px; margin: 20px 0; text-align: center; }
+    .score-badge { display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.15); border-radius: 20px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+    .score-giant { font-size: 2.8rem; font-weight: 800; line-height: 1; color: #38bdf8; margin: 4px 0; }
+    .score-sub { font-size: 0.78rem; color: #94a3b8; }
+    
+    .section-scores-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 14px; }
+    .sub-score-box { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 8px; text-align: center; }
+    .sub-score-name { font-size: 0.68rem; color: #cbd5e1; font-weight: 500; min-height: 26px; display: flex; align-items: center; justify-content: center; }
+    .sub-score-val { font-size: 1.2rem; font-weight: 700; color: #ffffff; margin-top: 2px; }
+
+    .history-entry { border-left: 3px solid var(--primary); background: var(--slate-50); border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Header Istituzionale -->
+  <header class="hospital-header">
+    <div class="logo-container">
+      <img src="logo.jpg" alt="Logo Fegato" onerror="this.style.display='none'">
+    </div>
+    
+    <div class="header-text">
+      <h1>PBC Monitor</h1>
+      <p>Colangite Biliare Primitiva</p>
+      <small>A.O.U. Policlinico di Bari</small>
+      <small style="font-weight: 600; color: var(--slate-700);">U.O.C. Gastroenterologia Universitaria</small>
+    </div>
+
+    <div class="logo-container">
+      <img src="logo.jpeg" alt="Logo Policlinico" onerror="this.style.display='none'">
+    </div>
+  </header>
+
+  <!-- Codice Paziente Univoco (Pseudonimizzato) -->
+  <div class="patient-id-card">
+    <label for="globalPatientId">Codice Paziente:</label>
+    <input type="text" id="globalPatientId" placeholder="es. PBC-01" oninput="savePatientId(this.value)">
+  </div>
+
+  <!-- Navigazione a Schede -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="setTab('tab-survey', this)">PBC-40</button>
+    <button class="nav-tab" onclick="setTab('tab-blood', this)">Esami Sangue</button>
+    <button class="nav-tab" onclick="setTab('tab-charts', this)">Grafici</button>
+    <button class="nav-tab" onclick="setTab('tab-archive', this)">Storico</button>
+  </nav>
+
+  <!-- 1. TAB PBC-40 -->
+  <div id="tab-survey" class="tab-pane active">
+    <div class="callout-info">
+      <strong>Istruzioni:</strong> Per ciascuna affermazione, indichi l'opzione che più si avvicina a come si sente. I dati restano memorizzati sul suo dispositivo e vengono trasmessi al centro medico di riferimento.
+    </div>
+
+    <div id="surveyContainer"></div>
+
+    <button type="button" class="btn-main" id="btnSubmitSurvey" style="margin-top:20px;" onclick="computeFullSurvey()">
+      Calcola e Invia al Centro Medico
+    </button>
+
+    <div id="resultsWrapper" style="display:none;">
+      <div class="score-summary-card">
+        <span class="score-badge">Esito PBC-40 Ufficiale</span>
+        <div class="score-giant" id="outTotalScore">--</div>
+        <div class="score-sub">Punteggio Totale Complessivo</div>
+        <div class="section-scores-grid" id="outSectionScores"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TAB PROFILO EPATICO -->
+  <div id="tab-blood" class="tab-pane">
+    <div class="card">
+      <div class="card-header">
+        <h2>Profilo Biochimico Epatico</h2>
+        <p>Inserisca i valori riscontrati nell'ultimo esame del sangue.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Data del Prelievo</label>
+        <input type="date" id="lab_date">
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>ALP (Fosfatasi Alcalina) [U/L]</label>
+          <input type="number" id="lab_alp" placeholder="es. 190">
+        </div>
+        <div class="form-group">
+          <label>ULN di ALP del Laboratorio [U/L]</label>
+          <input type="number" id="lab_alp_uln" placeholder="es. 104">
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Bilirubina Totale (mg/dL)</label>
+          <input type="number" step="0.01" id="lab_biliTot" placeholder="es. 1.10">
+        </div>
+        <div class="form-group">
+          <label>Bilirubina Frazionata / Diretta (mg/dL)</label>
+          <input type="number" step="0.01" id="lab_biliDir" placeholder="es. 0.30">
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>AST / GOT (U/L)</label>
+          <input type="number" id="lab_ast" placeholder="es. 34">
+        </div>
+        <div class="form-group">
+          <label>ALT / GPT (U/L)</label>
+          <input type="number" id="lab_alt" placeholder="es. 40">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Gamma-GT (GGT) [U/L]</label>
+        <input type="number" id="lab_ggt" placeholder="es. 55">
+      </div>
+
+      <button type="button" class="btn-main" id="btnSubmitLabs" onclick="storeLabTest()">Registra e Invia Esami</button>
+    </div>
+  </div>
+
+  <!-- 3. TAB GRAFICI -->
+  <div id="tab-charts" class="tab-pane">
+    <div class="card">
+      <div class="card-header">
+        <h2>Fosfatasi Alcalina (ALP) vs Limite Superiore (ULN)</h2>
+      </div>
+      <canvas id="alpTrendChart" width="400" height="230"></canvas>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Trend Punteggio Fatica & Prurito</h2>
+      </div>
+      <canvas id="sympTrendChart" width="400" height="230"></canvas>
+    </div>
+  </div>
+
+  <!-- 4. TAB STORICO -->
+  <div id="tab-archive" class="tab-pane">
+    <div class="card">
+      <div class="card-header">
+        <h2>Archivio Valutazioni PBC-40</h2>
+      </div>
+      <div id="surveyHistoryList"><p style="font-size:0.8rem; color:var(--slate-500);">Nessuna valutazione registrata.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Archivio Esami Ematochimici</h2>
+      </div>
+      <div id="labsHistoryList"><p style="font-size:0.8rem; color:var(--slate-500);">Nessun prelievo inserito.</p></div>
+    </div>
+
+    <button class="btn-sec" onclick="window.print()">Stampa / Salva in PDF</button>
+    <button class="btn-sec" style="color:var(--red-500); border-color:#fca5a5; margin-top:12px;" onclick="purgeLocalDatabase()">Cancella Dati Locali</button>
+  </div>
+
+</div>
+
+<script>
+  // LINK GOOGLE APPS SCRIPT COLLEGATO
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY_w7y1OllugHLgIEip-XG_n15Usr1ADjHOVWqs1eSLKRtjEGmj6OcBLrnGbpwwLZtPw/exec";
+
+  const userAnswers = {};
+
+  const officialPBC40 = [
+    {
+      secId: "digestione",
+      secTitle: "Digestione e Dieta",
+      secIntro: "Di seguito trova alcune frasi sulla digestione e sulla dieta. Indichi quanto spesso ciascuna delle situazioni descritte l'ha riguardata NELLE ULTIME QUATTRO SETTIMANE",
+      items: [
+        { id: 1, text: "Sono stato/a in grado di mangiare ciò che volevo", scale: [{ l: "Mai", v: 5 }, { l: "Raramente", v: 4 }, { l: "Qualche volta", v: 3 }, { l: "Spesso", v: 2 }, { l: "Sempre", v: 1 }] },
+        { id: 2, text: "Ho mangiato o bevuto poco, ma continuavo a sentirmi gonfio/a", scale: [{ l: "Mai", v: 1 }, { l: "Raramente", v: 2 }, { l: "Qualche volta", v: 3 }, { l: "Spesso", v: 4 }, { l: "Sempre", v: 5 }] },
+        { id: 3, text: "Mi sono sentito poco bene quando ho bevuto alcolici", scale: [{ l: "Mai", v: 1 }, { l: "Raramente", v: 2 }, { l: "Qualche volta", v: 3 }, { l: "Spesso", v: 4 }, { l: "Sempre", v: 5 }, { l: "Non bevo alcool", v: 0 }] }
+      ]
+    },
+    {
+      secId: "disturbi",
+      secTitle: "Disturbi Fisici",
+      secIntro: "Indichi quanto spesso ha provato i seguenti disturbi NELLE ULTIME QUATTRO SETTIMANE",
+      items: [
+        { id: 4, text: "Ho avuto dei fastidi sul lato destro del corpo", scale: stdFreq() },
+        { id: 5, text: "Ho avuto gli occhi secchi", scale: stdFreq() },
+        { id: 6, text: "Ho avuto la bocca molto secca", scale: stdFreq() },
+        { id: 7, text: "Ho avuto dei dolori alle ossa delle braccia e delle gambe", scale: stdFreq() }
+      ]
+    },
+    {
+      secId: "prurito",
+      secTitle: "Prurito",
+      secIntro: "Alcune persone con la Cirrosi Biliare Primitiva (CBP) soffrono di prurito. Indichi quanto spesso ha avuto prurito NELLE ULTIME QUATTRO SETTIMANE. Se non ne ha sofferto, barri la casella 'Non ho prurito'.",
+      items: [
+        { id: 8, text: "Il prurito mi ha disturbato il sonno", scale: itchFreq() },
+        { id: 9, text: "Mi sono grattato/a così tanto da far sanguinare la pelle", scale: itchFreq() },
+        { id: 10, text: "Ero in imbarazzo a causa del prurito", scale: itchFreq() }
+      ]
+    },
+    {
+      secId: "fatica",
+      secTitle: "Fatica",
+      secIntro: "Anche la fatica può essere un problema associato alla CBP. Indichi con quale frequenza ha vissuto ciascuna delle situazioni descritte sotto NELLE ULTIME QUATTRO SETTIMANE",
+      items: [
+        { id: 11, text: "Mi sono dovuto/a forzare per alzarmi dal letto", scale: stdFreq() },
+        { id: 12, text: "Ho dovuto dormire un po' durante il giorno", scale: stdFreq() },
+        { id: 13, text: "La fatica ha interferito con la mia routine quotidiana", scale: stdFreq() },
+        { id: 14, text: "Ero a pezzi", scale: stdFreq() },
+        { id: 15, text: "Ero così stanco/a che mi sono dovuto forzare a fare ciò che dovevo", scale: stdFreq() },
+        { id: 16, text: "Mi sono sentito/a così stanco da dover andare a dormire prima del solito", scale: stdFreq() },
+        { id: 17, text: "Improvvisamente mi sentivo molto affaticato/a", scale: stdFreq() },
+        { id: 18, text: "La CBP mi ha svuotato/a di ogni energia", scale: stdFreq() }
+      ]
+    },
+    {
+      secId: "quotidiana_cognitiva",
+      secTitle: "Vita Quotidiana e Funzione Cognitiva",
+      secIntro: "La sezione che segue è relativa all'impatto della CBP sull'organizzazione della vita quotidiana. Indichi quanto spesso ciascuna delle situazioni descritte sotto l'ha riguardata NELLE ULTIME QUATTRO SETTIMANE",
+      items: [
+        { id: 19, text: "Certi giorni avevo bisogno di molto tempo per fare qualsiasi cosa", scale: stdFreq() },
+        { id: 20, text: "Se un giorno ero molto indaffarato/a, avevo bisogno del giorno dopo per riprendermi", scale: stdFreq() },
+        { id: 21, text: "Ho dovuto moderare le mie attività quotidiane", scale: stdFreq() },
+        { id: 22, text: "Ho dovuto sforzarmi molto per ricordare le cose", scale: stdFreq() },
+        { id: 23, text: "Ho avuto difficoltà nel ricordare le cose da un giorno all'altro", scale: stdFreq() },
+        { id: 24, text: "La mia capacità di mantenere la concentrazione era ridotta a causa della CBP", scale: stdFreq() },
+        { id: 25, text: "Ho avuto difficoltà a stare dietro alle conversazioni", scale: stdFreq() },
+        { id: 26, text: "Ho trovato difficile concentrarmi su qualsiasi cosa", scale: stdFreq() },
+        { id: 27, text: "Ho avuto difficoltà nel ricordare cosa volevo fare", scale: stdFreq() }
+      ]
+    },
+    {
+      secId: "personale",
+      secTitle: "Impatto a Livello Personale",
+      secIntro: "Di seguito sono elencate alcune frasi sull'impatto che la CBP può avere a livello personale. Indichi quanto spesso ciascuna delle situazioni descritte sotto l'ha riguardata NELLE ULTIME QUATTRO SETTIMANE",
+      items: [
+        { id: 28, text: "A causa della CBP le cose che ero abituato/a a fare ora mi provocano più stress", scale: persScale(false) },
+        { id: 29, text: "La mia vita sessuale ha risentito della CBP", scale: persScale(true) },
+        { id: 30, text: "Avere la CBP mi butta giù", scale: persScale(false) },
+        { id: 31, text: "Sento di trascurare la mia famiglia a causa della CBP", scale: persScale(true) },
+        { id: 32, text: "A causa della CBP mi sento in colpa perché non posso fare ciò che era mia abitudine fare", scale: persScale(false) },
+        { id: 33, text: "Mi preoccupa come sarà la mia CBP in futuro", scale: persScale(false) }
+      ]
+    },
+    {
+      secId: "sociale_generale",
+      secTitle: "Vita Sociale ed Impatto Generale",
+      secIntro: "Le affermazioni che seguono riguardano i possibili effetti della CBP sulla sua vita sociale e generale. Indichi quanto è d'accordo o in disaccordo con ciascuna di queste affermazioni.",
+      items: [
+        { id: 34, text: "A volte mi sento frustrato/a perché non posso uscire e divertirmi", scale: agreeScale() },
+        { id: 35, text: "Tendo a tenere per me il fatto che ho la CBP", scale: agreeScale() },
+        { id: 36, text: "Non posso programmare le vacanze perché ho la CBP", scale: agreeScale() },
+        { id: 37, text: "La mia vita sociale si è praticamente azzerata", scale: agreeScale() },
+        { id: 38, text: "Ogni aspetto della mia vita è condizionato dalla CBP", scale: agreeScale() },
+        { id: 39, text: "La CBP ha ridotto la mia qualità di vita", scale: agreeScale() },
+        { id: 40, text: "Posso condurre una vita normale nonostante io abbia la CBP", scale: [{ l: "Fortemente d'accordo", v: 1 }, { l: "D'accordo", v: 2 }, { l: "Né accordo né disaccordo", v: 3 }, { l: "Disaccordo", v: 4 }, { l: "Fortemente in disaccordo", v: 5 }] }
+      ]
+    }
+  ];
+
+  function stdFreq() {
+    return [{ l: "Mai", v: 1 }, { l: "Raramente", v: 2 }, { l: "Qualche volta", v: 3 }, { l: "Spesso", v: 4 }, { l: "Sempre", v: 5 }];
+  }
+  function itchFreq() {
+    return [{ l: "Mai", v: 1 }, { l: "Raramente", v: 2 }, { l: "Qualche volta", v: 3 }, { l: "Spesso", v: 4 }, { l: "Sempre", v: 5 }, { l: "Non ho prurito", v: 0 }];
+  }
+  function persScale(hasNA) {
+    const s = [{ l: "Per nulla", v: 1 }, { l: "Poco", v: 2 }, { l: "In qualche modo", v: 3 }, { l: "Molto", v: 4 }, { l: "Moltissimo", v: 5 }];
+    if (hasNA) s.push({ l: "Non mi ha riguardato", v: 0 });
+    return s;
+  }
+  function agreeScale() {
+    return [{ l: "Fortemente d'accordo", v: 5 }, { l: "D'accordo", v: 4 }, { l: "Né accordo né disaccordo", v: 3 }, { l: "Disaccordo", v: 2 }, { l: "Fortemente in disaccordo", v: 1 }];
+  }
+
+  function savePatientId(val) {
+    localStorage.setItem('pbc_patient_id', val.trim().toUpperCase());
+  }
+
+  function renderSurveyUI() {
+    const mount = document.getElementById("surveyContainer");
+    let html = "";
+
+    officialPBC40.forEach(sec => {
+      html += `
+        <div class="section-banner">
+          <h3>${sec.secTitle}</h3>
+          <p>${sec.secIntro}</p>
+        </div>
+      `;
+
+      sec.items.forEach(q => {
+        html += `
+          <div class="q-card">
+            <div class="q-text">
+              <span class="q-num">${q.id}.</span>
+              <span>${q.text}</span>
+            </div>
+            <div class="opts-cluster" id="group_${q.id}">
+              ${q.scale.map(opt => `
+                <div class="opt-label-btn" onclick="selectOption(${q.id},${opt.v}, this)">
+                  <span class="opt-text">${opt.l}</span>
+                  <span class="opt-score">${opt.v}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+    });
+
+    mount.innerHTML = html;
+  }
+
+  function selectOption(questionId, val, element) {
+    userAnswers[questionId] = val;
+    const parent = document.getElementById(`group_${questionId}`);
+    parent.querySelectorAll('.opt-label-btn').forEach(btn => btn.classList.remove('selected'));
+    element.classList.add('selected');
+  }
+
+  function computeFullSurvey() {
+    const patientId = document.getElementById('globalPatientId').value.trim();
+    if (!patientId) {
+      alert("Inserisca il proprio Codice Paziente prima di procedere.");
+      document.getElementById('globalPatientId').focus();
+      return;
+    }
+
+    let grandTotal = 0;
+    const sectionTotals = {};
+    const unselected = [];
+
+    officialPBC40.forEach(sec => {
+      let secSum = 0;
+      sec.items.forEach(q => {
+        if (userAnswers[q.id] === undefined) {
+          unselected.push(q.id);
+        } else {
+          const val = userAnswers[q.id];
+          secSum += val;
+          grandTotal += val;
+        }
+      });
+      sectionTotals[sec.secId] = {
+        title: sec.secTitle,
+        sum: secSum
+      };
+    });
+
+    if (unselected.length > 0) {
+      alert(`Compilazione incompleta. Mancano risposte a ${unselected.length} domande:\nN. ${unselected.join(', ')}`);
+      return;
+    }
+
+    document.getElementById("outTotalScore").innerText = grandTotal;
+    const grid = document.getElementById("outSectionScores");
+    grid.innerHTML = Object.keys(sectionTotals).map(k => `
+      <div class="sub-score-box">
+        <div class="sub-score-name">${sectionTotals[k].title}</div>
+        <div class="sub-score-val">${sectionTotals[k].sum}</div>
+      </div>
+    `).join('');
+
+    const resBox = document.getElementById("resultsWrapper");
+    resBox.style.display = "block";
+    resBox.scrollIntoView({ behavior: 'smooth' });
+
+    // Salvataggio locale
+    const archive = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
+    archive.push({
+      date: new Date().toISOString().split('T')[0],
+      total: grandTotal,
+      fatigue: sectionTotals["fatica"].sum,
+      prurito: sectionTotals["prurito"].sum,
+      breakdown: sectionTotals
+    });
+    localStorage.setItem('pbc_surveys_v2', JSON.stringify(archive));
+    renderArchive();
+
+    // Invio al tuo Google Sheet
+    const btn = document.getElementById("btnSubmitSurvey");
+    btn.innerText = "Invio in corso al centro...";
+    btn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "survey",
+        patientId: patientId,
+        totalScore: grandTotal,
+        breakdown: sectionTotals
+      })
+    }).then(() => {
+      alert("Questionario calcolato e trasmesso con successo al centro medico!");
+      btn.innerText = "Calcola e Invia al Centro Medico";
+      btn.disabled = false;
+    }).catch(err => {
+      console.error(err);
+      alert("Dati salvati in locale sullo smartphone, ma c'è stato un problema di rete con la trasmissione.");
+      btn.innerText = "Calcola e Invia al Centro Medico";
+      btn.disabled = false;
+    });
+  }
+
+  function storeLabTest() {
+    const patientId = document.getElementById('globalPatientId').value.trim();
+    if (!patientId) {
+      alert("Inserisca il proprio Codice Paziente prima di salvare gli esami.");
+      document.getElementById('globalPatientId').focus();
+      return;
+    }
+
+    const date = document.getElementById('lab_date').value;
+    const alp = parseFloat(document.getElementById('lab_alp').value);
+    const alp_uln = parseFloat(document.getElementById('lab_alp_uln').value);
+
+    if (!date || isNaN(alp)) {
+      alert("È necessario inserire almeno la data e la Fosfatasi Alcalina (ALP).");
+      return;
+    }
+
+    const labRecord = {
+      date,
+      alp,
+      alp_uln: alp_uln || null,
+      biliTot: parseFloat(document.getElementById('lab_biliTot').value) || null,
+      biliDir: parseFloat(document.getElementById('lab_biliDir').value) || null,
+      ast: parseFloat(document.getElementById('lab_ast').value) || null,
+      alt: parseFloat(document.getElementById('lab_alt').value) || null,
+      ggt: parseFloat(document.getElementById('lab_ggt').value) || null
+    };
+
+    const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
+    labs.push(labRecord);
+    labs.sort((a, b) => new Date(a.date) - new Date(b.date));
+    localStorage.setItem('pbc_labs_v2', JSON.stringify(labs));
+    renderArchive();
+
+    // Invio al tuo Google Sheet
+    const btn = document.getElementById("btnSubmitLabs");
+    btn.innerText = "Invio esami in corso...";
+    btn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "labs",
+        patientId: patientId,
+        ...labRecord
+      })
+    }).then(() => {
+      alert("Profilo epatico registrato e trasmesso al centro!");
+      btn.innerText = "Registra e Invia Esami";
+      btn.disabled = false;
+    }).catch(err => {
+      console.error(err);
+      alert("Esami salvati sullo smartphone. Errore di sincronizzazione remota.");
+      btn.innerText = "Registra e Invia Esami";
+      btn.disabled = false;
+    });
+  }
+
+  function setTab(paneId, btn) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+    btn.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+
+    if (paneId === 'tab-charts') {
+      setTimeout(renderCharts, 100);
+    }
+  }
+
+  let alpChartRef = null;
+  let sympChartRef = null;
+
+  function renderCharts() {
+    const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
+    const surveys = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
+
+    const ctxAlp = document.getElementById('alpTrendChart').getContext('2d');
+    if (alpChartRef) alpChartRef.destroy();
+
+    alpChartRef = new Chart(ctxAlp, {
+      type: 'line',
+      data: {
+        labels: labs.map(x => x.date),
+        datasets: [
+          {
+            label: 'ALP Paziente (U/L)',
+            data: labs.map(x => x.alp),
+            borderColor: '#0284c7',
+            backgroundColor: 'rgba(2, 132, 199, 0.08)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.25
+          },
+          {
+            label: 'ULN Laboratorio',
+            data: labs.map(x => x.alp_uln),
+            borderColor: '#ef4444',
+            borderWidth: 2,
+            borderDash: [6, 4],
+            fill: false
+          }
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const ctxSymp = document.getElementById('sympTrendChart').getContext('2d');
+    if (sympChartRef) sympChartRef.destroy();
+
+    sympChartRef = new Chart(ctxSymp, {
+      type: 'bar',
+      data: {
+        labels: surveys.map(s => s.date),
+        datasets: [
+          { label: 'Subtotale Fatica', data: surveys.map(s => s.fatigue), backgroundColor: '#f59e0b' },
+          { label: 'Subtotale Prurito', data: surveys.map(s => s.prurito), backgroundColor: '#0284c7' }
+        ]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  function renderArchive() {
+    const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
+    const surveys = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
+
+    const pbcDiv = document.getElementById('surveyHistoryList');
+    if (surveys.length === 0) {
+      pbcDiv.innerHTML = '<p style="font-size:0.8rem; color:var(--slate-500);">Nessuna valutazione registrata.</p>';
+    } else {
+      pbcDiv.innerHTML = surveys.map(s => `
+        <div class="history-entry">
+          <div><strong>${s.date}</strong> — Totale: <strong>${s.total}</strong></div>
+          <div style="font-size:0.75rem; color:var(--slate-500);">Fatica: ${s.fatigue} | Prurito: ${s.prurito}</div>
+        </div>
+      `).join('');
+    }
+
+    const labsDiv = document.getElementById('labsHistoryList');
+    if (labs.length === 0) {
+      labsDiv.innerHTML = '<p style="font-size:0.8rem; color:var(--slate-500);">Nessun prelievo inserito.</p>';
+    } else {
+      labsDiv.innerHTML = labs.map(l => `
+        <div class="history-entry">
+          <div><strong>${l.date}</strong> — ALP: <strong>${l.alp} U/L</strong></div>
+          <div style="font-size:0.75rem; color:var(--slate-500);">Bili: ${l.biliTot || '-'} | ALT: ${l.alt || '-'}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function purgeLocalDatabase() {
+    if (confirm("Attenzione: confermi di voler azzerare tutti i dati registrati su questo smartphone?")) {
+      localStorage.removeItem('pbc_surveys_v2');
+      localStorage.removeItem('pbc_labs_v2');
+      renderArchive();
+      document.getElementById("resultsWrapper").style.display = "none";
+      alert("Memoria azzerata.");
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('lab_date').valueAsDate = new Date();
+    const savedId = localStorage.getItem('pbc_patient_id');
+    if (savedId) {
+      document.getElementById('globalPatientId').value = savedId;
+    }
+    renderSurveyUI();
+    renderArchive();
+  });
+</script>
+
+</body>
+</html>
