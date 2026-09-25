@@ -2,24 +2,27 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- CONFIGURAZIONE VIEWPORT COVER PER SCHERMO INTERO IPHONE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>PBC Care - Policlinico di Bari</title>
   
   <!-- COLLEGAMENTO AL MANIFEST PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- ICONA APPLICAZIONE HOME SCREEN (SMARTPHONE) -->
+  <!-- IMPOSTAZIONI SPECIFICHE PER APPLE STANDALONE -->
   <link rel="apple-touch-icon" sizes="180x180" href="logo.jpg">
   <link rel="icon" type="image/jpeg" href="logo.jpg">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PBC Care">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#0284c7">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --primary: #0284c7;
@@ -43,9 +46,31 @@
       --shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.08);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f8fafc; color: var(--slate-700); display: flex; justify-content: center; padding: 0; min-height: 100vh; }
-    .app-shell { max-width: 680px; width: 100%; padding: 14px 14px 60px 14px; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+    
+    body { 
+      background-color: #f8fafc; 
+      color: var(--slate-700); 
+      display: flex; 
+      justify-content: center; 
+      min-height: 100vh;
+      /* Gestione Safe Area per Dynamic Island / Notch e Home Bar di iOS */
+      padding-top: max(14px, env(safe-area-inset-top));
+      padding-bottom: max(32px, env(safe-area-inset-bottom));
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
+    }
+    
+    .app-shell { 
+      max-width: 680px; 
+      width: 100%; 
+    }
 
     /* Header Clinico */
     .hospital-header {
@@ -53,7 +78,7 @@
       border: 1px solid var(--slate-200);
       border-radius: var(--radius-md);
       padding: 18px 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       box-shadow: var(--shadow-md);
       display: flex;
       align-items: center;
@@ -135,9 +160,35 @@
     }
 
     /* Navigazione */
-    .nav-tabs { display: flex; background: #e2e8f0; border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 18px; position: sticky; top: 10px; z-index: 50; }
-    .nav-tab { flex: 1; padding: 10px 4px; font-size: 0.78rem; font-weight: 600; text-align: center; border: none; background: transparent; color: var(--slate-500); border-radius: 8px; cursor: pointer; transition: all 0.15s ease; }
-    .nav-tab.active { background: #ffffff; color: var(--primary-dark); box-shadow: var(--shadow-sm); }
+    .nav-tabs { 
+      display: flex; 
+      background: #e2e8f0; 
+      border-radius: 12px; 
+      padding: 4px; 
+      gap: 4px; 
+      margin-bottom: 18px; 
+      position: sticky; 
+      top: max(8px, env(safe-area-inset-top)); 
+      z-index: 50; 
+    }
+    .nav-tab { 
+      flex: 1; 
+      padding: 10px 4px; 
+      font-size: 0.78rem; 
+      font-weight: 600; 
+      text-align: center; 
+      border: none; 
+      background: transparent; 
+      color: var(--slate-500); 
+      border-radius: 8px; 
+      cursor: pointer; 
+      transition: all 0.15s ease; 
+    }
+    .nav-tab.active { 
+      background: #ffffff; 
+      color: var(--primary-dark); 
+      box-shadow: var(--shadow-sm); 
+    }
 
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
@@ -150,7 +201,7 @@
 
     .callout-info { background: var(--amber-50); border-left: 3.5px solid var(--amber-500); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; color: #92400e; line-height: 1.4; margin-bottom: 16px; }
 
-    /* PBC-40 */
+    /* Sezioni PBC-40 */
     .section-banner { background: linear-gradient(90deg, var(--primary-light), #f8fafc); border: 1px solid var(--primary-border); border-left: 4px solid var(--primary); padding: 12px 14px; border-radius: var(--radius-sm); margin: 20px 0 14px 0; }
     .section-banner h3 { font-size: 0.88rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.03em; }
     .section-banner p { font-size: 0.76rem; color: var(--slate-700); margin-top: 4px; font-style: italic; }
@@ -159,7 +210,14 @@
     .q-text { font-size: 0.88rem; font-weight: 600; color: var(--slate-900); line-height: 1.35; margin-bottom: 12px; display: flex; gap: 8px; }
     .q-num { color: var(--primary); font-weight: 700; min-width: 22px; }
 
-    .opts-cluster { display: flex; flex-direction: row; flex-wrap: nowrap; gap: 4px; width: 100%; }
+    /* Risposte forzate su una riga senza a capo */
+    .opts-cluster { 
+      display: flex; 
+      flex-direction: row; 
+      flex-wrap: nowrap; 
+      gap: 4px; 
+      width: 100%; 
+    }
     .opt-label-btn {
       flex: 1 1 0; 
       min-width: 0;
@@ -183,11 +241,26 @@
       color: #ffffff !important;
       box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
     }
-    .opt-text { font-size: 0.58rem; font-weight: 500; text-align: center; line-height: 1.1; word-break: break-word; display: flex; align-items: center; justify-content: center; flex: 1; }
-    .opt-score { font-size: 0.78rem; font-weight: 800; opacity: 0.85; margin-top: 2px; }
+    .opt-text { 
+      font-size: 0.58rem; 
+      font-weight: 500; 
+      text-align: center; 
+      line-height: 1.1; 
+      word-break: break-word; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      flex: 1; 
+    }
+    .opt-score { 
+      font-size: 0.78rem; 
+      font-weight: 800; 
+      opacity: 0.85; 
+      margin-top: 2px; 
+    }
     .opt-label-btn.selected .opt-score { opacity: 1; }
 
-    /* Layout Analiti Sangue */
+    /* Layout Analiti Sangue con ULN e Unità */
     .lab-row-box {
       background: var(--slate-50);
       border: 1px solid var(--slate-200);
@@ -940,10 +1013,10 @@
     renderSurveyUI();
     renderArchive();
 
-    // REGISTRAZIONE SERVICE WORKER PER PWA
+    // REGISTRAZIONE SERVICE WORKER
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(err => {
-        console.log('SW registration skipped or error:', err);
+        console.log('SW registration skipped:', err);
       });
     }
   });
