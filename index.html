@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PBC Care - Policlinico di Bari</title>
   
+  <!-- COLLEGAMENTO AL MANIFEST PWA -->
+  <link rel="manifest" href="manifest.json">
+  
   <!-- ICONA APPLICAZIONE HOME SCREEN (SMARTPHONE) -->
   <link rel="apple-touch-icon" sizes="180x180" href="logo.jpg">
   <link rel="icon" type="image/jpeg" href="logo.jpg">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="PBC Care">
+  <meta name="theme-color" content="#0284c7">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -183,7 +187,7 @@
     .opt-score { font-size: 0.78rem; font-weight: 800; opacity: 0.85; margin-top: 2px; }
     .opt-label-btn.selected .opt-score { opacity: 1; }
 
-    /* Layout Avanzato Analiti Sangue */
+    /* Layout Analiti Sangue */
     .lab-row-box {
       background: var(--slate-50);
       border: 1px solid var(--slate-200);
@@ -298,7 +302,7 @@
     </div>
   </div>
 
-  <!-- 2. TAB PROFILO EPATICO CON ULN E UNITÀ PERSONALIZZABILI -->
+  <!-- 2. TAB PROFILO EPATICO -->
   <div id="tab-blood" class="tab-pane">
     <div class="card">
       <div class="card-header">
@@ -311,7 +315,7 @@
         <input type="date" id="lab_date" style="width:100%; padding:9px 12px; border-radius:var(--radius-sm); border:1.5px solid var(--slate-200); font-size:0.92rem;">
       </div>
 
-      <!-- 1. Fosfatasi Alcalina (ALP) -->
+      <!-- 1. ALP -->
       <div class="lab-row-box">
         <div class="lab-row-header">1. Fosfatasi Alcalina (ALP)</div>
         <div class="lab-inputs-grid">
@@ -750,7 +754,6 @@
     });
   }
 
-  // Registrazione Profilo Epatico con ULN e Unità di Misura
   function storeLabTest() {
     const patientId = document.getElementById('globalPatientId').value.trim();
     if (!patientId) {
@@ -936,6 +939,13 @@
     }
     renderSurveyUI();
     renderArchive();
+
+    // REGISTRAZIONE SERVICE WORKER PER PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('SW registration skipped or error:', err);
+      });
+    }
   });
 </script>
 
