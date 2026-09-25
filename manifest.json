@@ -1,0 +1,15 @@
+{
+  "name": "PBC Monitor - Policlinico Bari",
+  "short_name": "PBC Care",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284c7",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192 512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
