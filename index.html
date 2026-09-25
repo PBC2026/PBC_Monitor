@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PBC Care - Policlinico di Bari</title>
+  
+  <!-- ICONA APPLICAZIONE HOME SCREEN (SMARTPHONE) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="logo.jpg">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="PBC Care">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +32,7 @@
       --amber-500: #f59e0b;
       --amber-50: #fffbeb;
       --red-500: #ef4444;
-      --radius-sm: 8px;
+      --radius-sm: 6px;
       --radius-md: 16px;
       --radius-lg: 20px;
       --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
@@ -130,7 +138,7 @@
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
-    /* Card Stile Medico */
+    /* Card */
     .card { background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--slate-200); box-shadow: var(--shadow-sm); padding: 18px; margin-bottom: 16px; }
     .card-header { margin-bottom: 14px; border-bottom: 1px solid var(--slate-100); padding-bottom: 10px; }
     .card-header h2 { font-size: 1.02rem; font-weight: 700; color: var(--slate-900); }
@@ -138,7 +146,7 @@
 
     .callout-info { background: var(--amber-50); border-left: 3.5px solid var(--amber-500); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; color: #92400e; line-height: 1.4; margin-bottom: 16px; }
 
-    /* Sezioni PBC-40 */
+    /* PBC-40 */
     .section-banner { background: linear-gradient(90deg, var(--primary-light), #f8fafc); border: 1px solid var(--primary-border); border-left: 4px solid var(--primary); padding: 12px 14px; border-radius: var(--radius-sm); margin: 20px 0 14px 0; }
     .section-banner h3 { font-size: 0.88rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.03em; }
     .section-banner p { font-size: 0.76rem; color: var(--slate-700); margin-top: 4px; font-style: italic; }
@@ -147,20 +155,21 @@
     .q-text { font-size: 0.88rem; font-weight: 600; color: var(--slate-900); line-height: 1.35; margin-bottom: 12px; display: flex; gap: 8px; }
     .q-num { color: var(--primary); font-weight: 700; min-width: 22px; }
 
-    /* Opzioni Cliccabili */
-    .opts-cluster { display: grid; grid-template-columns: repeat(auto-fit, minmax(62px, 1fr)); gap: 6px; }
+    .opts-cluster { display: flex; flex-direction: row; flex-wrap: nowrap; gap: 4px; width: 100%; }
     .opt-label-btn {
+      flex: 1 1 0; 
+      min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 8px 3px;
+      justify-content: space-between;
+      padding: 6px 2px;
       border-radius: var(--radius-sm);
       background: var(--slate-50);
       border: 1.5px solid var(--slate-200);
       cursor: pointer;
       user-select: none;
-      min-height: 52px;
+      min-height: 56px;
       transition: all 0.1s ease;
     }
     .opt-label-btn:active { transform: scale(0.97); }
@@ -170,17 +179,50 @@
       color: #ffffff !important;
       box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
     }
-    .opt-text { font-size: 0.65rem; font-weight: 500; text-align: center; line-height: 1.15; margin-bottom: 2px; }
-    .opt-score { font-size: 0.8rem; font-weight: 800; opacity: 0.85; }
+    .opt-text { font-size: 0.58rem; font-weight: 500; text-align: center; line-height: 1.1; word-break: break-word; display: flex; align-items: center; justify-content: center; flex: 1; }
+    .opt-score { font-size: 0.78rem; font-weight: 800; opacity: 0.85; margin-top: 2px; }
     .opt-label-btn.selected .opt-score { opacity: 1; }
 
-    /* Form Esami */
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.76rem; font-weight: 600; color: var(--slate-700); margin-bottom: 4px; }
-    .form-group input { width: 100%; padding: 10px 12px; border-radius: var(--radius-sm); border: 1.5px solid var(--slate-200); font-size: 0.92rem; color: var(--slate-900); }
+    /* Layout Avanzato Analiti Sangue */
+    .lab-row-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .lab-row-header {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lab-inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .lab-inputs-grid .input-sub label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--slate-500);
+      margin-bottom: 3px;
+    }
+    .lab-inputs-grid input, .lab-inputs-grid select {
+      width: 100%;
+      padding: 8px 6px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--slate-200);
+      font-size: 0.85rem;
+      color: var(--slate-900);
+      background: #ffffff;
+    }
 
-    /* Bottoni Principali */
+    /* Bottoni */
     .btn-main { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); }
     .btn-sec { background: transparent; border: 1.5px solid var(--slate-300); color: var(--slate-700); padding: 10px; border-radius: 10px; font-weight: 600; font-size: 0.82rem; cursor: pointer; width: 100%; margin-top: 8px; }
 
@@ -220,7 +262,7 @@
     </div>
   </header>
 
-  <!-- Codice Paziente Univoco (Pseudonimizzato) -->
+  <!-- Codice Paziente Univoco -->
   <div class="patient-id-card">
     <label for="globalPatientId">Codice Paziente:</label>
     <input type="text" id="globalPatientId" placeholder="es. PBC-01" oninput="savePatientId(this.value)">
@@ -256,55 +298,171 @@
     </div>
   </div>
 
-  <!-- 2. TAB PROFILO EPATICO -->
+  <!-- 2. TAB PROFILO EPATICO CON ULN E UNITÀ PERSONALIZZABILI -->
   <div id="tab-blood" class="tab-pane">
     <div class="card">
       <div class="card-header">
         <h2>Profilo Biochimico Epatico</h2>
-        <p>Inserisca i valori riscontrati nell'ultimo esame del sangue.</p>
+        <p>Inserisca i valori degli esami, l'ULN e l'unità di misura indicata sul referto.</p>
       </div>
 
-      <div class="form-group">
-        <label>Data del Prelievo</label>
-        <input type="date" id="lab_date">
+      <div style="margin-bottom: 14px;">
+        <label style="display:block; font-size:0.76rem; font-weight:600; color:var(--slate-700); margin-bottom:4px;">Data del Prelievo</label>
+        <input type="date" id="lab_date" style="width:100%; padding:9px 12px; border-radius:var(--radius-sm); border:1.5px solid var(--slate-200); font-size:0.92rem;">
       </div>
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label>ALP (Fosfatasi Alcalina) [U/L]</label>
-          <input type="number" id="lab_alp" placeholder="es. 190">
-        </div>
-        <div class="form-group">
-          <label>ULN di ALP del Laboratorio [U/L]</label>
-          <input type="number" id="lab_alp_uln" placeholder="es. 104">
-        </div>
-      </div>
-
-      <div class="form-row-2">
-        <div class="form-group">
-          <label>Bilirubina Totale (mg/dL)</label>
-          <input type="number" step="0.01" id="lab_biliTot" placeholder="es. 1.10">
-        </div>
-        <div class="form-group">
-          <label>Bilirubina Frazionata / Diretta (mg/dL)</label>
-          <input type="number" step="0.01" id="lab_biliDir" placeholder="es. 0.30">
-        </div>
-      </div>
-
-      <div class="form-row-2">
-        <div class="form-group">
-          <label>AST / GOT (U/L)</label>
-          <input type="number" id="lab_ast" placeholder="es. 34">
-        </div>
-        <div class="form-group">
-          <label>ALT / GPT (U/L)</label>
-          <input type="number" id="lab_alt" placeholder="es. 40">
+      <!-- 1. Fosfatasi Alcalina (ALP) -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">1. Fosfatasi Alcalina (ALP)</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.1" id="val_alp" placeholder="es. 195">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.1" id="uln_alp" placeholder="es. 104">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_alp">
+              <option value="U/L" selected>U/L</option>
+              <option value="µkat/L">µkat/L</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Gamma-GT (GGT) [U/L]</label>
-        <input type="number" id="lab_ggt" placeholder="es. 55">
+      <!-- 2. Bilirubina Totale -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">2. Bilirubina Totale</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.01" id="val_biliTot" placeholder="es. 1.20">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.01" id="uln_biliTot" placeholder="es. 1.00">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_biliTot">
+              <option value="mg/dL" selected>mg/dL</option>
+              <option value="µmol/L">µmol/L</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Bilirubina Diretta -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">3. Bilirubina Diretta (Coniugata)</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.01" id="val_biliDir" placeholder="es. 0.35">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.01" id="uln_biliDir" placeholder="es. 0.25">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_biliDir">
+              <option value="mg/dL" selected>mg/dL</option>
+              <option value="µmol/L">µmol/L</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Bilirubina Indiretta -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">4. Bilirubina Indiretta</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.01" id="val_biliInd" placeholder="es. 0.85">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.01" id="uln_biliInd" placeholder="es. 0.75">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_biliInd">
+              <option value="mg/dL" selected>mg/dL</option>
+              <option value="µmol/L">µmol/L</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. GGT -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">5. Gamma-GT (GGT)</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.1" id="val_ggt" placeholder="es. 55">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.1" id="uln_ggt" placeholder="es. 38">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_ggt">
+              <option value="U/L" selected>U/L</option>
+              <option value="µkat/L">µkat/L</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. AST -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">6. AST / GOT</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.1" id="val_ast" placeholder="es. 34">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.1" id="uln_ast" placeholder="es. 35">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_ast">
+              <option value="U/L" selected>U/L</option>
+              <option value="µkat/L">µkat/L</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. ALT -->
+      <div class="lab-row-box">
+        <div class="lab-row-header">7. ALT / GPT</div>
+        <div class="lab-inputs-grid">
+          <div class="input-sub">
+            <label>Valore</label>
+            <input type="number" step="0.1" id="val_alt" placeholder="es. 42">
+          </div>
+          <div class="input-sub">
+            <label>ULN Lab</label>
+            <input type="number" step="0.1" id="uln_alt" placeholder="es. 35">
+          </div>
+          <div class="input-sub">
+            <label>Unità</label>
+            <select id="unit_alt">
+              <option value="U/L" selected>U/L</option>
+              <option value="µkat/L">µkat/L</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <button type="button" class="btn-main" id="btnSubmitLabs" onclick="storeLabTest()">Registra e Invia Esami</button>
@@ -351,7 +509,6 @@
 </div>
 
 <script>
-  // LINK GOOGLE APPS SCRIPT COLLEGATO
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY_w7y1OllugHLgIEip-XG_n15Usr1ADjHOVWqs1eSLKRtjEGmj6OcBLrnGbpwwLZtPw/exec";
 
   const userAnswers = {};
@@ -556,7 +713,6 @@
     resBox.style.display = "block";
     resBox.scrollIntoView({ behavior: 'smooth' });
 
-    // Salvataggio locale
     const archive = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
     archive.push({
       date: new Date().toISOString().split('T')[0],
@@ -568,7 +724,6 @@
     localStorage.setItem('pbc_surveys_v2', JSON.stringify(archive));
     renderArchive();
 
-    // Invio al tuo Google Sheet
     const btn = document.getElementById("btnSubmitSurvey");
     btn.innerText = "Invio in corso al centro...";
     btn.disabled = true;
@@ -589,12 +744,13 @@
       btn.disabled = false;
     }).catch(err => {
       console.error(err);
-      alert("Dati salvati in locale sullo smartphone, ma c'è stato un problema di rete con la trasmissione.");
+      alert("Dati salvati sullo smartphone, ma c'è stato un problema di rete con la trasmissione.");
       btn.innerText = "Calcola e Invia al Centro Medico";
       btn.disabled = false;
     });
   }
 
+  // Registrazione Profilo Epatico con ULN e Unità di Misura
   function storeLabTest() {
     const patientId = document.getElementById('globalPatientId').value.trim();
     if (!patientId) {
@@ -604,11 +760,11 @@
     }
 
     const date = document.getElementById('lab_date').value;
-    const alp = parseFloat(document.getElementById('lab_alp').value);
-    const alp_uln = parseFloat(document.getElementById('lab_alp_uln').value);
+    const alp = parseFloat(document.getElementById('val_alp').value);
+    const alp_uln = parseFloat(document.getElementById('uln_alp').value);
 
     if (!date || isNaN(alp)) {
-      alert("È necessario inserire almeno la data e la Fosfatasi Alcalina (ALP).");
+      alert("È necessario inserire almeno la data del prelievo e il valore della Fosfatasi Alcalina (ALP).");
       return;
     }
 
@@ -616,11 +772,25 @@
       date,
       alp,
       alp_uln: alp_uln || null,
-      biliTot: parseFloat(document.getElementById('lab_biliTot').value) || null,
-      biliDir: parseFloat(document.getElementById('lab_biliDir').value) || null,
-      ast: parseFloat(document.getElementById('lab_ast').value) || null,
-      alt: parseFloat(document.getElementById('lab_alt').value) || null,
-      ggt: parseFloat(document.getElementById('lab_ggt').value) || null
+      unit_alp: document.getElementById('unit_alp').value,
+      biliTot: parseFloat(document.getElementById('val_biliTot').value) || null,
+      uln_biliTot: parseFloat(document.getElementById('uln_biliTot').value) || null,
+      unit_biliTot: document.getElementById('unit_biliTot').value,
+      biliDir: parseFloat(document.getElementById('val_biliDir').value) || null,
+      uln_biliDir: parseFloat(document.getElementById('uln_biliDir').value) || null,
+      unit_biliDir: document.getElementById('unit_biliDir').value,
+      biliInd: parseFloat(document.getElementById('val_biliInd').value) || null,
+      uln_biliInd: parseFloat(document.getElementById('uln_biliInd').value) || null,
+      unit_biliInd: document.getElementById('unit_biliInd').value,
+      ggt: parseFloat(document.getElementById('val_ggt').value) || null,
+      uln_ggt: parseFloat(document.getElementById('uln_ggt').value) || null,
+      unit_ggt: document.getElementById('unit_ggt').value,
+      ast: parseFloat(document.getElementById('val_ast').value) || null,
+      uln_ast: parseFloat(document.getElementById('uln_ast').value) || null,
+      unit_ast: document.getElementById('unit_ast').value,
+      alt: parseFloat(document.getElementById('val_alt').value) || null,
+      uln_alt: parseFloat(document.getElementById('uln_alt').value) || null,
+      unit_alt: document.getElementById('unit_alt').value
     };
 
     const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
@@ -629,7 +799,6 @@
     localStorage.setItem('pbc_labs_v2', JSON.stringify(labs));
     renderArchive();
 
-    // Invio al tuo Google Sheet
     const btn = document.getElementById("btnSubmitLabs");
     btn.innerText = "Invio esami in corso...";
     btn.disabled = true;
@@ -683,7 +852,7 @@
         labels: labs.map(x => x.date),
         datasets: [
           {
-            label: 'ALP Paziente (U/L)',
+            label: 'ALP Paziente',
             data: labs.map(x => x.alp),
             borderColor: '#0284c7',
             backgroundColor: 'rgba(2, 132, 199, 0.08)',
@@ -742,8 +911,8 @@
     } else {
       labsDiv.innerHTML = labs.map(l => `
         <div class="history-entry">
-          <div><strong>${l.date}</strong> — ALP: <strong>${l.alp} U/L</strong></div>
-          <div style="font-size:0.75rem; color:var(--slate-500);">Bili: ${l.biliTot || '-'} | ALT: ${l.alt || '-'}</div>
+          <div><strong>${l.date}</strong> — ALP: <strong>${l.alp} ${l.unit_alp || 'U/L'}</strong></div>
+          <div style="font-size:0.75rem; color:var(--slate-500);">Bili Tot: ${l.biliTot || '-'} | GGT: ${l.ggt || '-'}</div>
         </div>
       `).join('');
     }
