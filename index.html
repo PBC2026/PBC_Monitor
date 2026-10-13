@@ -78,7 +78,7 @@
       border: 1px solid var(--slate-200);
       border-radius: var(--radius-md);
       padding: 18px 16px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       box-shadow: var(--shadow-md);
       display: flex;
       align-items: center;
@@ -127,6 +127,41 @@
       color: var(--slate-500);
       display: block;
       line-height: 1.35;
+    }
+
+    /* Banner Follow-up a 3 Mesi */
+    .followup-alert {
+      display: none;
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      border-left: 5px solid #ef4444;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .followup-alert.active {
+      display: block;
+      animation: pulseAlert 0.3s ease;
+    }
+    .followup-alert h3 {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #991b1b;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .followup-alert p {
+      font-size: 0.78rem;
+      color: #7f1d1d;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    @keyframes pulseAlert {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Box ID Paziente */
@@ -302,6 +337,25 @@
     /* Bottoni */
     .btn-main { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); }
     .btn-sec { background: transparent; border: 1.5px solid var(--slate-300); color: var(--slate-700); padding: 10px; border-radius: 10px; font-weight: 600; font-size: 0.82rem; cursor: pointer; width: 100%; margin-top: 8px; }
+    
+    .btn-calendar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s ease;
+    }
+    .btn-calendar:active { background: #dcfce7; }
 
     /* Risultati Score */
     .score-summary-card { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; border-radius: var(--radius-lg); padding: 22px; margin: 20px 0; text-align: center; }
@@ -339,6 +393,17 @@
     </div>
   </header>
 
+  <!-- BANNER NOTIFICA / PROMEMORIA A 3 MESI -->
+  <div id="followupAlertBox" class="followup-alert">
+    <h3>⚠️ Promemoria Controllo Trimestrale</h3>
+    <p id="followupAlertText">
+      Sono trascorsi più di 3 mesi dall'ultimo inserimento. È consigliabile ripetere il questionario PBC-40 e aggiornare il profilo degli esami del sangue.
+    </p>
+    <button type="button" class="btn-calendar" onclick="scheduleCalendarFollowup(90)">
+      📅 Salva Promemoria a 3 Mesi nel Calendario
+    </button>
+  </div>
+
   <!-- Codice Paziente Univoco -->
   <div class="patient-id-card">
     <label for="globalPatientId">Codice Paziente:</label>
@@ -372,6 +437,10 @@
         <div class="score-sub">Punteggio Totale Complessivo</div>
         <div class="section-scores-grid" id="outSectionScores"></div>
       </div>
+      
+      <button type="button" class="btn-calendar" onclick="scheduleCalendarFollowup(90)">
+        📅 Programma Promemoria Prossimo PBC-40 (+3 Mesi)
+      </button>
     </div>
   </div>
 
@@ -543,6 +612,10 @@
       </div>
 
       <button type="button" class="btn-main" id="btnSubmitLabs" onclick="storeLabTest()">Registra e Invia Esami</button>
+      
+      <button type="button" class="btn-calendar" onclick="scheduleCalendarFollowup(90)">
+        📅 Programma Promemoria Nuovi Esami (+3 Mesi)
+      </button>
     </div>
   </div>
 
@@ -701,6 +774,93 @@
     localStorage.setItem('pbc_patient_id', val.trim().toUpperCase());
   }
 
+  /* VERIFICA INTERVALLO 3 MESI (90 GIORNI) */
+  function checkThreeMonthsFollowup() {
+    const surveys = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
+    const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
+    
+    let lastDate = null;
+    if (surveys.length > 0) {
+      const d1 = new Date(surveys[surveys.length - 1].date);
+      if (!isNaN(d1)) lastDate = d1;
+    }
+    if (labs.length > 0) {
+      const d2 = new Date(labs[labs.length - 1].date);
+      if (!isNaN(d2) && (!lastDate || d2 > lastDate)) lastDate = d2;
+    }
+
+    const alertBox = document.getElementById('followupAlertBox');
+    if (!lastDate) {
+      alertBox.classList.remove('active');
+      return;
+    }
+
+    const now = new Date();
+    const diffTime = Math.abs(now - lastDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays >= 90) {
+      document.getElementById('followupAlertText').innerHTML = 
+        `Sono trascorsi <strong>${diffDays} giorni</strong> dall'ultimo inserimento registrato (${lastDate.toLocaleDateString('it-IT')}). È il momento di ripetere il questionario PBC-40 e aggiornare il profilo ematochimico per la valutazione clinica.`;
+      alertBox.classList.add('active');
+    } else {
+      alertBox.classList.remove('active');
+    }
+  }
+
+  /* PROGRAMMAZIONE EVENTO NEL CALENDARIO (.ICS) */
+  function scheduleCalendarFollowup(daysToAdd = 90) {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + daysToAdd);
+    targetDate.setHours(9, 0, 0, 0); // Fissato alle 09:00 del mattino
+
+    const endDate = new Date(targetDate);
+    endDate.setHours(10, 0, 0, 0);
+
+    const pad = n => (n < 10 ? '0' + n : n);
+    const toICSDate = d => 
+      `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+
+    const dtStart = toICSDate(targetDate);
+    const dtEnd = toICSDate(endDate);
+    const nowStamp = toICSDate(new Date());
+
+    const summary = "Controllo PBC: Ripetere Esami e PBC-40";
+    const description = "Controllo trimestrale Colangite Biliare Primitiva. Aprire l'app PBC Care ed effettuare la registrazione per la U.O.C. Gastroenterologia Universitaria di Bari: https://pbc2026.github.io/PBC_Monitor/";
+    const location = "A.O.U. Policlinico di Bari";
+
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Policlinico di Bari//PBC Care//IT",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VEVENT",
+      `UID:pbc-followup-${Date.now()}@policlinico.ba.it`,
+      `DTSTAMP:${nowStamp}`,
+      `DTSTART:${dtStart}`,
+      `DTEND:${dtEnd}`,
+      `SUMMARY:${summary}`,
+      `DESCRIPTION:${description}`,
+      `LOCATION:${location}`,
+      "BEGIN:VALARM",
+      "ACTION:DISPLAY",
+      "DESCRIPTION:Promemoria Controllo PBC",
+      "TRIGGER:-PT15M",
+      "END:VALARM",
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\r\n");
+
+    const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", "Controllo_PBC_3Mesi.ics");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   function renderSurveyUI() {
     const mount = document.getElementById("surveyContainer");
     let html = "";
@@ -800,6 +960,7 @@
     });
     localStorage.setItem('pbc_surveys_v2', JSON.stringify(archive));
     renderArchive();
+    checkThreeMonthsFollowup();
 
     const btn = document.getElementById("btnSubmitSurvey");
     btn.innerText = "Invio in corso al centro...";
@@ -874,6 +1035,7 @@
     labs.sort((a, b) => new Date(a.date) - new Date(b.date));
     localStorage.setItem('pbc_labs_v2', JSON.stringify(labs));
     renderArchive();
+    checkThreeMonthsFollowup();
 
     const btn = document.getElementById("btnSubmitLabs");
     btn.innerText = "Invio esami in corso...";
@@ -999,6 +1161,7 @@
       localStorage.removeItem('pbc_surveys_v2');
       localStorage.removeItem('pbc_labs_v2');
       renderArchive();
+      checkThreeMonthsFollowup();
       document.getElementById("resultsWrapper").style.display = "none";
       alert("Memoria azzerata.");
     }
@@ -1012,6 +1175,7 @@
     }
     renderSurveyUI();
     renderArchive();
+    checkThreeMonthsFollowup();
 
     // REGISTRAZIONE SERVICE WORKER
     if ('serviceWorker' in navigator) {
