@@ -39,6 +39,7 @@
       --amber-500: #f59e0b;
       --amber-50: #fffbeb;
       --red-500: #ef4444;
+      --green-600: #16a34a;
       --radius-sm: 6px;
       --radius-md: 16px;
       --radius-lg: 20px;
@@ -60,7 +61,6 @@
       display: flex; 
       justify-content: center; 
       min-height: 100vh;
-      /* Gestione Safe Area per Dynamic Island / Notch e Home Bar di iOS */
       padding-top: max(14px, env(safe-area-inset-top));
       padding-bottom: max(32px, env(safe-area-inset-bottom));
       padding-left: max(12px, env(safe-area-inset-left));
@@ -208,8 +208,8 @@
     }
     .nav-tab { 
       flex: 1; 
-      padding: 10px 4px; 
-      font-size: 0.78rem; 
+      padding: 10px 2px; 
+      font-size: 0.74rem; 
       font-weight: 600; 
       text-align: center; 
       border: none; 
@@ -245,7 +245,6 @@
     .q-text { font-size: 0.88rem; font-weight: 600; color: var(--slate-900); line-height: 1.35; margin-bottom: 12px; display: flex; gap: 8px; }
     .q-num { color: var(--primary); font-weight: 700; min-width: 22px; }
 
-    /* Risposte forzate su una riga senza a capo */
     .opts-cluster { 
       display: flex; 
       flex-direction: row; 
@@ -253,28 +252,28 @@
       gap: 4px; 
       width: 100%; 
     }
-    .opt-label-btn {
+    .opt-label-btn { 
       flex: 1 1 0; 
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 2px;
-      border-radius: var(--radius-sm);
-      background: var(--slate-50);
-      border: 1.5px solid var(--slate-200);
-      cursor: pointer;
-      user-select: none;
-      min-height: 56px;
-      transition: all 0.1s ease;
+      min-width: 0; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 6px 2px; 
+      border-radius: var(--radius-sm); 
+      background: var(--slate-50); 
+      border: 1.5px solid var(--slate-200); 
+      cursor: pointer; 
+      user-select: none; 
+      min-height: 56px; 
+      transition: all 0.1s ease; 
     }
     .opt-label-btn:active { transform: scale(0.97); }
-    .opt-label-btn.selected {
-      background: var(--primary) !important;
-      border-color: var(--primary) !important;
-      color: #ffffff !important;
-      box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
+    .opt-label-btn.selected { 
+      background: var(--primary) !important; 
+      border-color: var(--primary) !important; 
+      color: #ffffff !important; 
+      box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35); 
     }
     .opt-text { 
       font-size: 0.58rem; 
@@ -295,65 +294,77 @@
     }
     .opt-label-btn.selected .opt-score { opacity: 1; }
 
-    /* Layout Analiti Sangue con ULN e Unità */
-    .lab-row-box {
-      background: var(--slate-50);
-      border: 1px solid var(--slate-200);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-    .lab-row-header {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--slate-900);
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .lab-inputs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-    }
-    .lab-inputs-grid .input-sub label {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 600;
-      color: var(--slate-500);
-      margin-bottom: 3px;
-    }
-    .lab-inputs-grid input, .lab-inputs-grid select {
+    /* Modulo Prurito e Dropdown */
+    .form-select-itch {
       width: 100%;
-      padding: 8px 6px;
+      padding: 9px 10px;
       border-radius: var(--radius-sm);
       border: 1.5px solid var(--slate-200);
-      font-size: 0.85rem;
-      color: var(--slate-900);
-      background: #ffffff;
+      background-color: #ffffff;
+      font-size: 0.82rem;
+      color: var(--slate-700);
+      margin-top: 4px;
+    }
+
+    /* Layout Analiti Sangue con ULN e Unità */
+    .lab-row-box { 
+      background: var(--slate-50); 
+      border: 1px solid var(--slate-200); 
+      border-radius: 12px; 
+      padding: 12px; 
+      margin-bottom: 12px; 
+    }
+    .lab-row-header { 
+      font-size: 0.82rem; 
+      font-weight: 700; 
+      color: var(--slate-900); 
+      margin-bottom: 8px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    .lab-inputs-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr 1fr; 
+      gap: 8px; 
+    }
+    .lab-inputs-grid .input-sub label { 
+      display: block; 
+      font-size: 0.68rem; 
+      font-weight: 600; 
+      color: var(--slate-500); 
+      margin-bottom: 3px; 
+    }
+    .lab-inputs-grid input, .lab-inputs-grid select { 
+      width: 100%; 
+      padding: 8px 6px; 
+      border-radius: var(--radius-sm); 
+      border: 1.5px solid var(--slate-200); 
+      font-size: 0.85rem; 
+      color: var(--slate-900); 
+      background: #ffffff; 
     }
 
     /* Bottoni */
     .btn-main { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #ffffff; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25); }
     .btn-sec { background: transparent; border: 1.5px solid var(--slate-300); color: var(--slate-700); padding: 10px; border-radius: 10px; font-weight: 600; font-size: 0.82rem; cursor: pointer; width: 100%; margin-top: 8px; }
     
-    .btn-calendar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 12px;
-      background: #f0fdf4;
-      color: #166534;
-      border: 1.5px solid #86efac;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.2s ease;
+    .btn-calendar { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 8px; 
+      width: 100%; 
+      padding: 12px; 
+      background: #f0fdf4; 
+      color: #166534; 
+      border: 1.5px solid #86efac; 
+      border-radius: 12px; 
+      font-size: 0.85rem; 
+      font-weight: 700; 
+      cursor: pointer; 
+      margin-top: 10px; 
+      transition: background 0.2s ease; 
     }
     .btn-calendar:active { background: #dcfce7; }
 
@@ -413,6 +424,7 @@
   <!-- Navigazione a Schede -->
   <nav class="nav-tabs">
     <button class="nav-tab active" onclick="setTab('tab-survey', this)">PBC-40</button>
+    <button class="nav-tab" onclick="setTab('tab-itch', this)">Prurito NRS / 5-D</button>
     <button class="nav-tab" onclick="setTab('tab-blood', this)">Esami Sangue</button>
     <button class="nav-tab" onclick="setTab('tab-charts', this)">Grafici</button>
     <button class="nav-tab" onclick="setTab('tab-archive', this)">Storico</button>
@@ -444,7 +456,151 @@
     </div>
   </div>
 
-  <!-- 2. TAB PROFILO EPATICO -->
+  <!-- 2. TAB PRURITO (NRS & 5-D ITCH SCALE) -->
+  <div id="tab-itch" class="tab-pane">
+    <div class="card">
+      <div class="card-header">
+        <h2>Worst-Itch Numerical Rating Scale (NRS)</h2>
+        <p>Indichi l'intensità del peggior prurito avvertito nelle <strong>ultime 24 ore</strong>.</p>
+      </div>
+      
+      <div style="text-align: center; margin: 16px 0;">
+        <span style="font-size: 2.4rem; font-weight: 800; color: var(--primary);" id="nrsDisplayVal">0</span>
+        <span style="font-size: 0.85rem; color: var(--slate-500); display: block; font-weight: 600;" id="nrsSeverityLabel">Nessun prurito (0)</span>
+      </div>
+
+      <input type="range" id="itch_nrs_slider" min="0" max="10" value="0" step="1" 
+             style="width: 100%; accent-color: var(--primary); cursor: pointer;" 
+             oninput="updateNRSDisplay(this.value)">
+
+      <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--slate-500); margin-top: 6px;">
+        <span>0 (Assente)</span>
+        <span>3 (Lieve)</span>
+        <span>6 (Moderato)</span>
+        <span>8 (Grave)</span>
+        <span>10 (Insopportabile)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>5-D Itch Scale</h2>
+        <p>Valutazione multidimensionale del prurito riferita alle <strong>ultime 2 settimane</strong>.</p>
+      </div>
+
+      <!-- 1. Durata -->
+      <div class="q-card">
+        <div class="q-text"><strong>1. Durata:</strong> Per quante ore al giorno ha avvertito prurito?</div>
+        <select id="fiveD_duration" class="form-select-itch">
+          <option value="1">Meno di 6 ore al giorno (1)</option>
+          <option value="2">Da 6 a 12 ore al giorno (2)</option>
+          <option value="3">Da 12 a 18 ore al giorno (3)</option>
+          <option value="4">Da 18 a 23 ore al giorno (4)</option>
+          <option value="5">Tutto il giorno / Prurito costante (5)</option>
+        </select>
+      </div>
+
+      <!-- 2. Intensità (Degree) -->
+      <div class="q-card">
+        <div class="q-text"><strong>2. Intensità:</strong> Quanto è stato intenso il prurito?</div>
+        <select id="fiveD_degree" class="form-select-itch">
+          <option value="1">Lieve, avvertito solo se ci si pensa (1)</option>
+          <option value="2">Avvertito spesso, ma non interferisce con le attività (2)</option>
+          <option value="3">Fastidioso, a volte interferisce con le attività (3)</option>
+          <option value="4">Molto fastidioso, interferisce spesso (4)</option>
+          <option value="5">Insopportabile, impedisce le normali attività (5)</option>
+        </select>
+      </div>
+
+      <!-- 3. Decorso (Direction) -->
+      <div class="q-card">
+        <div class="q-text"><strong>3. Decorso:</strong> Rispetto alle settimane precedenti, il prurito è:</div>
+        <select id="fiveD_direction" class="form-select-itch">
+          <option value="1">Totalmente scomparso (1)</option>
+          <option value="2">Molto migliorato, ma presente (2)</option>
+          <option value="3">Invariato (3)</option>
+          <option value="4">Peggiorato (4)</option>
+          <option value="5">Molto peggiorato rispetto a prima (5)</option>
+        </select>
+      </div>
+
+      <!-- 4. Disabilità (Disability) -->
+      <div class="q-card">
+        <div class="q-text"><strong>4. Disabilità:</strong> Quanto ha influito il prurito sulle seguenti attività?</div>
+        
+        <div style="font-size:0.78rem; margin-top:8px;">
+          <label style="display:block; font-weight:600; margin-bottom:2px; color:var(--slate-700);">A. Sonno / Riposo notturno</label>
+          <select id="fiveD_dis_sleep" class="form-select-itch">
+            <option value="1">Mai influito (1)</option>
+            <option value="2">Raramente (2)</option>
+            <option value="3">A volte ritarda il sonno (3)</option>
+            <option value="4">Spesso mi sveglia durante la notte (4)</option>
+            <option value="5">Insonnia continua (5)</option>
+          </select>
+        </div>
+
+        <div style="font-size:0.78rem; margin-top:10px;">
+          <label style="display:block; font-weight:600; margin-bottom:2px; color:var(--slate-700);">B. Lavoro / Faccende quotidiane</label>
+          <select id="fiveD_dis_work" class="form-select-itch">
+            <option value="1">Nessun impatto (1)</option>
+            <option value="2">Raramente (2)</option>
+            <option value="3">A volte (3)</option>
+            <option value="4">Spesso (4)</option>
+            <option value="5">Sempre limitante (5)</option>
+          </select>
+        </div>
+
+        <div style="font-size:0.78rem; margin-top:10px;">
+          <label style="display:block; font-weight:600; margin-bottom:2px; color:var(--slate-700);">C. Tempo libero / Vita sociale</label>
+          <select id="fiveD_dis_leisure" class="form-select-itch">
+            <option value="1">Nessun impatto (1)</option>
+            <option value="2">Raramente (2)</option>
+            <option value="3">A volte (3)</option>
+            <option value="4">Spesso (4)</option>
+            <option value="5">Sempre limitante (5)</option>
+          </select>
+        </div>
+
+        <div style="font-size:0.78rem; margin-top:10px;">
+          <label style="display:block; font-weight:600; margin-bottom:2px; color:var(--slate-700);">D. Attività domestiche</label>
+          <select id="fiveD_dis_house" class="form-select-itch">
+            <option value="1">Nessun impatto (1)</option>
+            <option value="2">Raramente (2)</option>
+            <option value="3">A volte (3)</option>
+            <option value="4">Spesso (4)</option>
+            <option value="5">Sempre limitante (5)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 5. Distribuzione Topografica -->
+      <div class="q-card">
+        <div class="q-text"><strong>5. Distribuzione:</strong> Selezioni le zone colpite dal prurito:</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.78rem; margin-top: 8px;">
+          <label><input type="checkbox" class="dist-check" value="mani"> Palmi mani</label>
+          <label><input type="checkbox" class="dist-check" value="piedi"> Piante piedi</label>
+          <label><input type="checkbox" class="dist-check" value="braccia"> Braccia</label>
+          <label><input type="checkbox" class="dist-check" value="gambe"> Gambe</label>
+          <label><input type="checkbox" class="dist-check" value="schiena"> Schiena</label>
+          <label><input type="checkbox" class="dist-check" value="torace_addome"> Torace / Addome</label>
+          <label><input type="checkbox" class="dist-check" value="viso"> Volto / Cuoio capelluto</label>
+          <label><input type="checkbox" class="dist-check" value="generalizzato"> Generalizzato</label>
+        </div>
+      </div>
+
+      <div style="background:var(--slate-50); border:1.5px solid var(--primary-border); border-radius:12px; padding:14px; margin-top:16px; text-align:center;">
+        <div style="font-size:0.78rem; font-weight:600; color:var(--slate-500); text-transform:uppercase;">Totale 5-D Itch Score Previsto</div>
+        <div id="fiveDTotalScoreDisplay" style="font-size:2.2rem; font-weight:800; color:var(--primary); margin:4px 0;">-- / 25</div>
+        <small style="color:var(--slate-500); font-size:0.72rem;">(Range: 5 = minimo impatto; 25 = massimo impatto)</small>
+      </div>
+
+      <button type="button" class="btn-main" id="btnSubmitItch" style="margin-top:16px;" onclick="saveItchAssessment()">
+        Registra e Invia Score Prurito
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. TAB PROFILO EPATICO -->
   <div id="tab-blood" class="tab-pane">
     <div class="card">
       <div class="card-header">
@@ -619,7 +775,7 @@
     </div>
   </div>
 
-  <!-- 3. TAB GRAFICI -->
+  <!-- 4. TAB GRAFICI -->
   <div id="tab-charts" class="tab-pane">
     <div class="card">
       <div class="card-header">
@@ -630,19 +786,33 @@
 
     <div class="card">
       <div class="card-header">
-        <h2>Trend Punteggio Fatica & Prurito</h2>
+        <h2>Trend Sintomi PBC-40 (Fatica & Prurito)</h2>
       </div>
       <canvas id="sympTrendChart" width="400" height="230"></canvas>
     </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Trend Prurito Dedicato (Worst-Itch NRS)</h2>
+      </div>
+      <canvas id="itchNrsTrendChart" width="400" height="230"></canvas>
+    </div>
   </div>
 
-  <!-- 4. TAB STORICO -->
+  <!-- 5. TAB STORICO -->
   <div id="tab-archive" class="tab-pane">
     <div class="card">
       <div class="card-header">
         <h2>Archivio Valutazioni PBC-40</h2>
       </div>
       <div id="surveyHistoryList"><p style="font-size:0.8rem; color:var(--slate-500);">Nessuna valutazione registrata.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Archivio Prurito (NRS / 5-D)</h2>
+      </div>
+      <div id="itchHistoryList"><p style="font-size:0.8rem; color:var(--slate-500);">Nessuna valutazione registrata.</p></div>
     </div>
 
     <div class="card">
@@ -774,20 +944,139 @@
     localStorage.setItem('pbc_patient_id', val.trim().toUpperCase());
   }
 
+  /* LOGICA WORST-ITCH NRS */
+  function updateNRSDisplay(val) {
+    const display = document.getElementById('nrsDisplayVal');
+    const label = document.getElementById('nrsSeverityLabel');
+    display.innerText = val;
+
+    const v = parseInt(val, 10);
+    if (v === 0) {
+      label.innerText = "Nessun prurito (0)";
+      label.style.color = "var(--slate-500)";
+    } else if (v <= 3) {
+      label.innerText = "Prurito Lieve (NRS 1-3)";
+      label.style.color = "var(--green-600)";
+    } else if (v <= 6) {
+      label.innerText = "Prurito Moderato (NRS 4-6)";
+      label.style.color = "var(--amber-500)";
+    } else if (v <= 8) {
+      label.innerText = "Prurito Grave (NRS 7-8)";
+      label.style.color = "#ea580c";
+    } else {
+      label.innerText = "Prurito Molto Grave / Invalidante (NRS 9-10)";
+      label.style.color = "var(--red-500)";
+    }
+  }
+
+  /* CALCOLO 5-D ITCH SCALE */
+  function compute5DItchScore() {
+    const duration = parseInt(document.getElementById('fiveD_duration').value, 10);
+    const degree = parseInt(document.getElementById('fiveD_degree').value, 10);
+    const direction = parseInt(document.getElementById('fiveD_direction').value, 10);
+
+    const disSleep = parseInt(document.getElementById('fiveD_dis_sleep').value, 10);
+    const disWork = parseInt(document.getElementById('fiveD_dis_work').value, 10);
+    const disLeisure = parseInt(document.getElementById('fiveD_dis_leisure').value, 10);
+    const disHouse = parseInt(document.getElementById('fiveD_dis_house').value, 10);
+    const disabilityMean = (disSleep + disWork + disLeisure + disHouse) / 4;
+
+    const checkboxes = document.querySelectorAll('.dist-check:checked');
+    const isGeneralized = Array.from(checkboxes).some(cb => cb.value === 'generalizzato');
+    const checkedCount = checkboxes.length;
+
+    let distributionScore = 1;
+    if (isGeneralized || checkedCount >= 7) {
+      distributionScore = 5;
+    } else if (checkedCount >= 5) {
+      distributionScore = 4;
+    } else if (checkedCount >= 3) {
+      distributionScore = 3;
+    } else if (checkedCount >= 2) {
+      distributionScore = 2;
+    } else {
+      distributionScore = 1;
+    }
+
+    const total5D = +(duration + degree + direction + disabilityMean + distributionScore).toFixed(1);
+    return {
+      total: total5D,
+      domains: {
+        duration,
+        degree,
+        direction,
+        disability: +disabilityMean.toFixed(2),
+        distribution: distributionScore
+      }
+    };
+  }
+
+  function saveItchAssessment() {
+    const patientId = document.getElementById('globalPatientId').value.trim();
+    if (!patientId) {
+      alert("Inserisca il proprio Codice Paziente prima di procedere.");
+      document.getElementById('globalPatientId').focus();
+      return;
+    }
+
+    const nrsVal = parseInt(document.getElementById('itch_nrs_slider').value, 10);
+    const fiveD = compute5DItchScore();
+
+    document.getElementById('fiveDTotalScoreDisplay').innerText = `${fiveD.total} / 25`;
+
+    const record = {
+      date: new Date().toISOString().split('T')[0],
+      nrs: nrsVal,
+      fiveD_total: fiveD.total,
+      fiveD_breakdown: fiveD.domains
+    };
+
+    const itchHistory = JSON.parse(localStorage.getItem('pbc_itch_v1')) || [];
+    itchHistory.push(record);
+    itchHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
+    localStorage.setItem('pbc_itch_v1', JSON.stringify(itchHistory));
+
+    renderArchive();
+    checkThreeMonthsFollowup();
+
+    const btn = document.getElementById('btnSubmitItch');
+    btn.innerText = "Invio in corso...";
+    btn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "itch_assessment",
+        patientId: patientId,
+        ...record
+      })
+    }).then(() => {
+      alert("Valutazione del prurito registrata e inviata con successo!");
+      btn.innerText = "Registra e Invia Score Prurito";
+      btn.disabled = false;
+    }).catch(err => {
+      console.error(err);
+      alert("Dati salvati in locale sullo smartphone, ma si è verificato un errore di trasmissione.");
+      btn.innerText = "Registra e Invia Score Prurito";
+      btn.disabled = false;
+    });
+  }
+
   /* VERIFICA INTERVALLO 3 MESI (90 GIORNI) */
   function checkThreeMonthsFollowup() {
     const surveys = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
     const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
+    const itchList = JSON.parse(localStorage.getItem('pbc_itch_v1')) || [];
     
     let lastDate = null;
-    if (surveys.length > 0) {
-      const d1 = new Date(surveys[surveys.length - 1].date);
-      if (!isNaN(d1)) lastDate = d1;
-    }
-    if (labs.length > 0) {
-      const d2 = new Date(labs[labs.length - 1].date);
-      if (!isNaN(d2) && (!lastDate || d2 > lastDate)) lastDate = d2;
-    }
+    [surveys, labs, itchList].forEach(arr => {
+      if (arr.length > 0) {
+        const d = new Date(arr[arr.length - 1].date);
+        if (!isNaN(d) && (!lastDate || d > lastDate)) lastDate = d;
+      }
+    });
 
     const alertBox = document.getElementById('followupAlertBox');
     if (!lastDate) {
@@ -801,18 +1090,18 @@
 
     if (diffDays >= 90) {
       document.getElementById('followupAlertText').innerHTML = 
-        `Sono trascorsi <strong>${diffDays} giorni</strong> dall'ultimo inserimento registrato (${lastDate.toLocaleDateString('it-IT')}). È il momento di ripetere il questionario PBC-40 e aggiornare il profilo ematochimico per la valutazione clinica.`;
+        `Sono trascorsi <strong>${diffDays} giorni</strong> dall'ultimo inserimento registrato (${lastDate.toLocaleDateString('it-IT')}). È consigliabile ripetere i questionari e aggiornare il profilo biochimico.`;
       alertBox.classList.add('active');
     } else {
       alertBox.classList.remove('active');
     }
   }
 
-  /* PROGRAMMAZIONE EVENTO NEL CALENDARIO (.ICS) */
+  /* PROGRAMMAZIONE EVENTO .ICS */
   function scheduleCalendarFollowup(daysToAdd = 90) {
     const targetDate = new Date();
     targetDate.setDate(targetDate.getDate() + daysToAdd);
-    targetDate.setHours(9, 0, 0, 0); // Fissato alle 09:00 del mattino
+    targetDate.setHours(9, 0, 0, 0);
 
     const endDate = new Date(targetDate);
     endDate.setHours(10, 0, 0, 0);
@@ -825,8 +1114,8 @@
     const dtEnd = toICSDate(endDate);
     const nowStamp = toICSDate(new Date());
 
-    const summary = "Controllo PBC: Ripetere Esami e PBC-40";
-    const description = "Controllo trimestrale Colangite Biliare Primitiva. Aprire l'app PBC Care ed effettuare la registrazione per la U.O.C. Gastroenterologia Universitaria di Bari: https://pbc2026.github.io/PBC_Monitor/";
+    const summary = "Controllo PBC: Ripetere Esami e Valutazione Clinica";
+    const description = "Controllo trimestrale Colangite Biliare Primitiva. Aprire l'app PBC Care ed effettuare la registrazione per la U.O.C. Gastroenterologia Universitaria di Bari.";
     const location = "A.O.U. Policlinico di Bari";
 
     const icsContent = [
@@ -958,6 +1247,7 @@
       prurito: sectionTotals["prurito"].sum,
       breakdown: sectionTotals
     });
+    archive.sort((a, b) => new Date(a.date) - new Date(b.date));
     localStorage.setItem('pbc_surveys_v2', JSON.stringify(archive));
     renderArchive();
     checkThreeMonthsFollowup();
@@ -1076,11 +1366,14 @@
 
   let alpChartRef = null;
   let sympChartRef = null;
+  let itchNrsChartRef = null;
 
   function renderCharts() {
     const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
     const surveys = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
+    const itchList = JSON.parse(localStorage.getItem('pbc_itch_v1')) || [];
 
+    // Grafico 1: ALP vs ULN
     const ctxAlp = document.getElementById('alpTrendChart').getContext('2d');
     if (alpChartRef) alpChartRef.destroy();
 
@@ -1111,6 +1404,7 @@
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
 
+    // Grafico 2: Fatica e Prurito (PBC-40)
     const ctxSymp = document.getElementById('sympTrendChart').getContext('2d');
     if (sympChartRef) sympChartRef.destroy();
 
@@ -1125,11 +1419,41 @@
       },
       options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
     });
+
+    // Grafico 3: Worst-Itch NRS nel tempo
+    const ctxItch = document.getElementById('itchNrsTrendChart').getContext('2d');
+    if (itchNrsChartRef) itchNrsChartRef.destroy();
+
+    itchNrsChartRef = new Chart(ctxItch, {
+      type: 'line',
+      data: {
+        labels: itchList.map(i => i.date),
+        datasets: [
+          {
+            label: 'Worst-Itch NRS (0-10)',
+            data: itchList.map(i => i.nrs),
+            borderColor: '#ea580c',
+            backgroundColor: 'rgba(234, 88, 12, 0.1)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.2
+          }
+        ]
+      },
+      options: { 
+        responsive: true, 
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          y: { min: 0, max: 10, ticks: { stepSize: 1 } }
+        }
+      }
+    });
   }
 
   function renderArchive() {
     const labs = JSON.parse(localStorage.getItem('pbc_labs_v2')) || [];
     const surveys = JSON.parse(localStorage.getItem('pbc_surveys_v2')) || [];
+    const itchList = JSON.parse(localStorage.getItem('pbc_itch_v1')) || [];
 
     const pbcDiv = document.getElementById('surveyHistoryList');
     if (surveys.length === 0) {
@@ -1139,6 +1463,18 @@
         <div class="history-entry">
           <div><strong>${s.date}</strong> — Totale: <strong>${s.total}</strong></div>
           <div style="font-size:0.75rem; color:var(--slate-500);">Fatica: ${s.fatigue} | Prurito: ${s.prurito}</div>
+        </div>
+      `).join('');
+    }
+
+    const itchDiv = document.getElementById('itchHistoryList');
+    if (itchList.length === 0) {
+      itchDiv.innerHTML = '<p style="font-size:0.8rem; color:var(--slate-500);">Nessuna valutazione registrata.</p>';
+    } else {
+      itchDiv.innerHTML = itchList.map(i => `
+        <div class="history-entry">
+          <div><strong>${i.date}</strong> — Worst NRS: <strong>${i.nrs}/10</strong></div>
+          <div style="font-size:0.75rem; color:var(--slate-500);">5-D Total: <strong>${i.fiveD_total}/25</strong></div>
         </div>
       `).join('');
     }
@@ -1160,6 +1496,7 @@
     if (confirm("Attenzione: confermi di voler azzerare tutti i dati registrati su questo smartphone?")) {
       localStorage.removeItem('pbc_surveys_v2');
       localStorage.removeItem('pbc_labs_v2');
+      localStorage.removeItem('pbc_itch_v1');
       renderArchive();
       checkThreeMonthsFollowup();
       document.getElementById("resultsWrapper").style.display = "none";
@@ -1177,7 +1514,6 @@
     renderArchive();
     checkThreeMonthsFollowup();
 
-    // REGISTRAZIONE SERVICE WORKER
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(err => {
         console.log('SW registration skipped:', err);
